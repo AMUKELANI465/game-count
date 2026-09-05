@@ -11,4 +11,6 @@ services:
         value: "true"
       - key: MAX_IMAGE_SIZE_MB
         value: "20"
+      - key: PYTHON_VERSION
+        value: "3.12.3"
     autoDeploy: true
