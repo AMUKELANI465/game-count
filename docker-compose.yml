@@ -1,0 +1,35 @@
+# Optional. Docker is NOT required to run Game Count locally - see the
+# README for plain `npm run dev` / `uvicorn` instructions, which is the
+# fastest way to run the demo. This compose file is provided for anyone who
+# prefers containers, or wants a local Postgres instead of the SQLite
+# fallback.
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gamecount
+      POSTGRES_PASSWORD: gamecount
+      POSTGRES_DB: gamecount
+    ports:
+      - "5432:5432"
+    volumes:
+      - gamecount_pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://gamecount:gamecount@db:5432/gamecount
+      DEMO_MODE: "true"
+      MAX_IMAGE_SIZE_MB: "20"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/results:/app/results
+
+volumes:
+  gamecount_pgdata:

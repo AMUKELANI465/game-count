@@ -1,0 +1,34 @@
+# Environment
+.env
+backend/.env
+
+# Python
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Node
+node_modules/
+dist/
+frontend/dist/
+
+# Database
+*.db
+backend/game_count.db
+
+# Uploaded / generated images (keep the folders, not their contents)
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/results/*
+!backend/results/.gitkeep
+
+# Trained model weights (large binary files)
+*.pt
+ai/models/*
+!ai/models/.gitkeep
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
