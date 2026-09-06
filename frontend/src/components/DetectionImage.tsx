@@ -1,12 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { Detection } from "../types";
-
-const SPECIES_COLORS: Record<string, string> = {
-  elephant: "#2F5233",
-  giraffe: "#C97B2C",
-  impala: "#8C6239",
-  springbok: "#4C7A5A",
-};
+import { SPECIES_COLORS } from "../constants";
 
 interface Props {
   imageUrl: string;
@@ -20,7 +14,7 @@ interface Props {
  * (The backend also produces a pre-annotated JPEG, but drawing live lets us
  * keep boxes crisp at any display size.)
  */
-export default function DetectionImage({ imageUrl, detections, alt = "Aerial survey image" }: Props) {
+export default function DetectionImage({ imageUrl, detections, alt = "Analyzed wildlife image" }: Props) {
   const imgRef = useRef<HTMLImageElement>(null);
   const [naturalSize, setNaturalSize] = useState<{ w: number; h: number } | null>(null);
   const [renderedSize, setRenderedSize] = useState<{ w: number; h: number } | null>(null);
@@ -56,7 +50,7 @@ export default function DetectionImage({ imageUrl, detections, alt = "Aerial sur
       />
       {naturalSize &&
         detections.map((det, i) => {
-          const color = SPECIES_COLORS[det.species] || "#c97b2c";
+          const color = SPECIES_COLORS[det.species] || "#b96922";
           const left = det.bbox.x1 * scaleX;
           const top = det.bbox.y1 * scaleY;
           const width = (det.bbox.x2 - det.bbox.x1) * scaleX;

@@ -8,12 +8,14 @@ interface StatCardProps {
 
 export default function StatCard({ label, value, icon }: StatCardProps) {
   return (
-    <div className="bg-white rounded-xl border border-earth-200 p-5 flex items-center justify-between shadow-sm">
-      <div>
-        <div className="text-xs uppercase tracking-wide text-forest-500 font-semibold">{label}</div>
-        <div className="text-2xl font-bold text-forest-800 mt-1">{value}</div>
+    <div className="gc-card p-4 sm:p-5">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="text-[11px] uppercase tracking-wide text-earth-500 font-bold">{label}</div>
+          <div className="mt-2 text-2xl font-bold text-neutral-950">{value}</div>
+        </div>
+        {icon && <div className="text-neutral-700">{icon}</div>}
       </div>
-      {icon && <div className="text-forest-400">{icon}</div>}
     </div>
   );
 }

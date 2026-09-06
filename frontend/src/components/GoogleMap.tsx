@@ -22,9 +22,9 @@ interface GoogleMapProps {
 }
 
 const MARKER_COLORS: Record<string, string> = {
-  verified: "#2F5233", // forest-600
-  pending: "#C97B2C", // accent-500
-  analyzing: "#8c6239", // earth-500
+  verified: "#111113", // neutral-950
+  pending: "#5aa2f2", // accent-400
+  analyzing: "#969aa3", // earth-400
 };
 
 /**

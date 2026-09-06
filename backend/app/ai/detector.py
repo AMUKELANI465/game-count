@@ -20,7 +20,7 @@ import time
 from abc import ABC, abstractmethod
 from typing import List, Dict
 
-from app.config import SPECIES
+from app.config import SPECIES, YOLO_CONFIDENCE, YOLO_IMAGE_SIZE, DETECTABLE_SPECIES
 
 
 class AnimalDetector(ABC):
@@ -32,10 +32,12 @@ class AnimalDetector(ABC):
 
 class DemoDetector(AnimalDetector):
     """
-    Generates plausible-looking, randomized detections across the four MVP
-    species. Results are clearly flagged as simulated by the caller (the
-    /api/analyze endpoint sets "demo": true, and the frontend displays a
-    'DEMO / SIMULATED AI RESULTS' banner).
+    Generates plausible-looking, randomized detections for the species the
+    currently deployed model can actually detect (DETECTABLE_SPECIES - see
+    app/config.py), so simulated results don't overstate capability the real
+    model doesn't have. Results are clearly flagged as simulated by the
+    caller (the /api/analyze endpoint sets "demo": true, and the frontend
+    displays a 'DEMO / SIMULATED AI RESULTS' banner).
     """
 
     # Roughly mimics real-world herd sizes: impala/springbok in bigger
@@ -57,9 +59,9 @@ class DemoDetector(AnimalDetector):
         start = time.time()
 
         detections = []
-        species_counts: Dict[str, int] = {}
+        species_counts: Dict[str, int] = {s: 0 for s in SPECIES}
 
-        for species in SPECIES:
+        for species in DETECTABLE_SPECIES:
             lo, hi = self.COUNT_RANGES[species]
             count = random.randint(lo, hi)
             species_counts[species] = count
@@ -108,22 +110,36 @@ class YOLODetector(AnimalDetector):
     def __init__(self, model_path: str):
         from ultralytics import YOLO  # imported lazily, real-mode only
 
-        if not model_path:
-            raise ValueError("MODEL_PATH must be set when DEMO_MODE=false")
-        self.model = YOLO(model_path)
+        self.model = YOLO(model_path or "yolov8n.pt")
+
+        # Restrict inference to species this checkpoint can actually detect
+        # (see DETECTABLE_SPECIES in app/config.py) so it doesn't report
+        # unreliable guesses for classes it wasn't trained well enough on.
+        names = self.model.names
+        name_items = names.items() if isinstance(names, dict) else enumerate(names)
+        name_to_id = {str(v).strip().lower(): k for k, v in name_items}
+        self.active_class_ids = [name_to_id[s] for s in DETECTABLE_SPECIES if s in name_to_id]
 
     def analyze(self, image_path: str, image_width: int, image_height: int) -> dict:
         start = time.time()
-        results = self.model(image_path)[0]
+        results = self.model.predict(
+            source=image_path,
+            conf=YOLO_CONFIDENCE,
+            imgsz=YOLO_IMAGE_SIZE,
+            classes=self.active_class_ids or None,
+            verbose=False,
+        )[0]
 
         detections = []
         species_counts: Dict[str, int] = {s: 0 for s in SPECIES}
 
         for box in results.boxes:
             cls_id = int(box.cls[0])
-            species = self.model.names.get(cls_id, "unknown")
-            if species not in SPECIES:
-                continue  # ignore classes outside the MVP's four species
+            names = self.model.names
+            species = names.get(cls_id, "unknown") if isinstance(names, dict) else names[cls_id]
+            species = str(species).strip().lower()
+            if species not in DETECTABLE_SPECIES:
+                continue  # ignore classes this checkpoint isn't trusted on
             confidence = float(box.conf[0])
             x1, y1, x2, y2 = [int(v) for v in box.xyxy[0]]
 

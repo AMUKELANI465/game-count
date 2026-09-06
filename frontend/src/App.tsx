@@ -15,7 +15,7 @@ function AppShell() {
   return (
     <div className="flex min-h-screen bg-earth-50">
       <Sidebar />
-      <main className="flex-1 min-w-0">
+      <main className="flex-1 min-w-0 md:ml-64">
         <Routes>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/new-survey" element={<NewSurvey />} />

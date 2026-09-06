@@ -1,7 +1,5 @@
-# Example Ultralytics YOLO dataset configuration for Game Count.
-# Fill in real paths once a labeled dataset exists under ai/dataset/.
-
-path: .            # dataset root
+# Ultralytics YOLO dataset configuration for GameCount.
+path: .                  # dataset root (relative to this file)
 train: images/train
 val: images/val
 

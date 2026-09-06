@@ -1,5 +1,5 @@
 """
-Game Count backend - FastAPI application.
+GameCount backend - FastAPI application.
 
 Endpoints:
     GET    /api/health
@@ -21,18 +21,18 @@ from PIL import Image
 
 from app.config import (
     DEMO_MODE, MODEL_PATH, UPLOAD_DIR, RESULTS_DIR,
-    MAX_IMAGE_SIZE_MB, ALLOWED_EXTENSIONS, SPECIES,
+    MAX_IMAGE_SIZE_MB, ALLOWED_EXTENSIONS, SPECIES, CORS_ORIGINS,
 )
 from app.ai.detector import get_detector
 from app.services.annotate import draw_annotations
 from app.database import db
 from app.schemas import SurveyCreate, SurveyUpdate
 
-app = FastAPI(title="Game Count API", description="AI-assisted wildlife population counting")
+app = FastAPI(title="GameCount API", description="AI-powered wildlife counting")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # hackathon prototype - tighten before real deployment
+    allow_origins=CORS_ORIGINS,  # "*" by default; set CORS_ORIGINS before deploying publicly
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -55,6 +55,7 @@ def health():
         "status": "ok",
         "demo_mode": DEMO_MODE,
         "species_supported": SPECIES,
+        "model": MODEL_PATH or "demo-detector",
     }
 
 

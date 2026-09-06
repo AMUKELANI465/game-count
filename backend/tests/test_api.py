@@ -1,5 +1,5 @@
 """
-Basic automated tests for Game Count's backend.
+Basic automated tests for GameCount's backend.
 Run with:  pytest
 """
 import io

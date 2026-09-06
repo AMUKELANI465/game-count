@@ -1,36 +1,30 @@
 # Hackathon Demo (3 minutes)
 
-A short walkthrough script for demonstrating Game Count live.
+A short walkthrough script for demonstrating GameCount live.
 
-### Step 1 - Open Game Count
+### Step 1 - Open GameCount
 
-Load the landing page. Point out the tagline: **AI-assisted wildlife
-population counting**, and the pilot environment (Welgevonden Game
-Reserve, Limpopo).
+Load the landing page. Point out the tagline: **AI-powered wildlife
+counting**.
 
-### Step 2 - Create a new survey
+### Step 2 - Upload a wildlife image
 
-Click **Start New Survey**. Fill in a survey name, date, and location
-(e.g. "Aerial Survey #005", today's date, "Northern Section").
+Click **Analyze an Image**. Drag an image onto the upload area (or click
+to browse), and optionally fill in a label, date and location.
 
-### Step 3 - Upload aerial wildlife imagery
-
-Drag an aerial image onto the upload area (or click to browse). Show the
-preview.
-
-### Step 4 - Click "Analyse with AI"
+### Step 3 - Click "Analyze Image"
 
 Click the button and narrate: "This sends the image to our detection
 service." (In demo mode this uses simulated results - point out the
-**DEMO / SIMULATED AI RESULTS** banner so the audience knows it's not a
+**Demo / Simulated AI Results** banner so the audience knows it's not a
 live model yet.)
 
-### Step 5 - Show AI detection boxes
+### Step 4 - Show AI detection boxes
 
 On the Analysis page, show the bounding boxes drawn over the image, each
 labeled with species and confidence.
 
-### Step 6 - Show species counts
+### Step 5 - Show species counts
 
 Point out the species breakdown panel, e.g.:
 
@@ -43,39 +37,41 @@ Springbok: 18
 Total: 71
 ```
 
-### Step 7 - Ranger reviews the result
+### Step 6 - Review and save
 
-Click **Review Results**. On the Results page, adjust a count - for
-example change Impala from 37 to 35 - to demonstrate that the ranger stays
-in control of the final number.
+Click **Review & Save**. On the Results page, adjust a count - for
+example change Impala from 37 to 35 - to demonstrate that a human stays in
+control of the final number.
 
-### Step 8 - Show AI estimate vs. verified count
+### Step 7 - Show AI vs. verified count
 
 Point out the comparison panel:
 
 ```
-AI estimate: 71
-Verified count: 69
+AI detected: 71
+Verified: 69
 ```
 
-Emphasize: this is Game Count's core value proposition - **AI assists, the
-ranger decides.**
+Emphasize: this is GameCount's core value proposition - **AI assists,
+humans decide.**
 
-### Step 9 - Save the survey
+### Step 8 - Save the result
 
-Click **Save Survey**.
+Click **Save Result**.
 
-### Step 10 - Open survey history
+### Step 9 - Open history
 
-Navigate to **Surveys** and show the saved record, with both the AI and
-verified counts visible in the table. Click into it to show the full
-survey detail page.
+Navigate to **History** and show the saved record, with both the AI and
+verified counts visible. Click into it to show the full detail page.
+
+### Step 10 - Show analytics
+
+Navigate to **Analytics** and point out that every chart is built from
+saved analyses - nothing is hardcoded.
 
 ## One-line pitch
 
-> "Wildlife census is essential for conservation management, but counting
-> animals from aerial surveys can be repetitive and time-consuming. Game
-> Count doesn't replace the ranger - it gives them an AI-assisted first
-> pass. The ranger uploads aerial imagery, Game Count identifies and
-> counts visible wildlife, and the ranger reviews and verifies the
-> result."
+> "Counting animals from wildlife images is repetitive and time-consuming.
+> GameCount doesn't replace the person doing it - it gives them an
+> AI-assisted first pass. Upload an image, GameCount detects and counts
+> the animals, and you review and verify the result before it's saved."

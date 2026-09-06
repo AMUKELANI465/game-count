@@ -7,8 +7,19 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
+      # DEMO_MODE stays "true" until a wildlife-specific model trained on
+      # elephant/giraffe/impala/springbok exists (see ai/README.md). The
+      # stock yolov8n.pt checkpoint has no impala/springbok classes at all,
+      # so running it as MODEL_PATH here would silently report 0 for those
+      # two species while looking like a real result.
       - key: DEMO_MODE
         value: "true"
+      - key: MODEL_PATH
+        value: ""
+      - key: YOLO_CONFIDENCE
+        value: "0.25"
+      - key: YOLO_IMAGE_SIZE
+        value: "960"
       - key: MAX_IMAGE_SIZE_MB
         value: "20"
       - key: PYTHON_VERSION

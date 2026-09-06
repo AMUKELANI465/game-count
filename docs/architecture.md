@@ -1,6 +1,6 @@
 # Architecture
 
-Game Count follows a simple, three-tier architecture deliberately kept free
+GameCount follows a simple, three-tier architecture deliberately kept free
 of microservices so a small student/hackathon team can understand and
 extend it easily:
 

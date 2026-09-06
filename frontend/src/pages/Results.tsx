@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { CheckCircle2, Loader2, ArrowLeft, PawPrint, Shield } from "lucide-react";
+import { CheckCircle2, Loader2, ArrowLeft, ShieldCheck, AlertCircle, Zap } from "lucide-react";
 import { api, SPECIES_EMOJI } from "../services/api";
 import type { AnalyzeResult } from "../types";
 
@@ -23,19 +23,14 @@ export default function Results() {
 
   if (!state) {
     return (
-      <div className="min-h-screen bg-earth-50 flex items-center justify-center px-4">
-        <div className="bg-white border border-earth-200 rounded-xl p-8 text-center max-w-lg">
+      <div className="page-shell flex items-center justify-center">
+        <div className="gc-card p-8 text-center max-w-lg">
           <AlertCircle className="mx-auto mb-4 text-earth-300" size={48} />
-          <h1 className="text-lg font-bold text-forest-800 mb-2">No Results to Review</h1>
-          <p className="text-forest-600 mb-6">
-            Complete an analysis to review and verify survey results.
-          </p>
-          <button
-            onClick={() => navigate("/new-survey")}
-            className="inline-flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white font-bold px-6 py-3 rounded-lg"
-          >
-            <PawPrint size={18} />
-            New Survey
+          <h1 className="text-lg font-bold text-neutral-950 mb-2">No Results to Review</h1>
+          <p className="text-earth-500 mb-6">Analyze an image to review and save a result.</p>
+          <button onClick={() => navigate("/new-survey")} className="gc-button-primary mx-auto">
+            <Zap size={18} />
+            Analyze an Image
           </button>
         </div>
       </div>
@@ -76,7 +71,7 @@ export default function Results() {
       });
       setSaved(true);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not save survey.");
+      setError(e instanceof Error ? e.message : "Could not save this result.");
     } finally {
       setSaving(false);
     }
@@ -84,29 +79,23 @@ export default function Results() {
 
   if (saved) {
     return (
-      <div className="min-h-screen bg-earth-50 flex items-center justify-center px-4 py-8">
-        <div className="bg-white border border-earth-200 rounded-xl p-8 text-center max-w-lg">
-          <CheckCircle2 className="mx-auto mb-4 text-forest-600" size={56} />
-          <h1 className="text-2xl font-bold text-forest-800 mb-3">Survey Saved</h1>
-          <p className="text-forest-600 mb-2">
-            The verified census for <strong>"{survey.survey_name}"</strong> has been recorded.
+      <div className="page-shell flex items-center justify-center">
+        <div className="gc-card p-8 text-center max-w-lg">
+          <CheckCircle2 className="mx-auto mb-4 text-neutral-950" size={52} />
+          <h1 className="text-2xl font-bold text-neutral-950 mb-3">Saved</h1>
+          <p className="text-earth-500 mb-2">
+            <strong className="text-neutral-800">"{survey.survey_name}"</strong> has been added to your history.
           </p>
-          <p className="text-sm text-forest-500 mb-8">
-            Total animals counted: <strong className="text-forest-800">{verifiedTotal}</strong>
+          <p className="text-sm text-earth-500 mb-8">
+            Total animals counted: <strong className="text-neutral-950">{verifiedTotal}</strong>
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="flex-1 bg-forest-600 hover:bg-forest-700 text-white font-bold px-5 py-3 rounded-lg transition-colors"
-            >
+            <button onClick={() => navigate("/dashboard")} className="gc-button-primary flex-1">
               View Dashboard
             </button>
-            <button
-              onClick={() => navigate("/new-survey")}
-              className="flex-1 bg-white border border-earth-300 hover:border-forest-400 text-forest-700 font-bold px-5 py-3 rounded-lg transition-colors"
-            >
-              New Survey
+            <button onClick={() => navigate("/new-survey")} className="gc-button-secondary flex-1">
+              Analyze Another
             </button>
           </div>
         </div>
@@ -115,48 +104,31 @@ export default function Results() {
   }
 
   return (
-    <div className="min-h-screen bg-earth-50 px-4 sm:px-6 lg:px-8 py-8">
+    <div className="page-shell">
       <div className="max-w-5xl mx-auto">
-        {/* Back Button */}
-        <button
-          onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-sm text-forest-500 hover:text-forest-700 mb-6 font-medium"
-        >
+        <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 text-sm text-earth-500 hover:text-neutral-950 mb-6 font-medium">
           <ArrowLeft size={16} />
           Back
         </button>
 
         {/* Header */}
-        <div className="bg-white border border-earth-200 rounded-xl p-6 sm:p-8 mb-6">
-          <div className="flex items-start gap-3 mb-4">
-            <div className="flex items-center justify-center w-10 h-10 bg-forest-100 rounded-lg text-forest-700">
-              <Shield size={24} />
+        <div className="gc-card p-6 sm:p-8 mb-6">
+          <div className="flex items-start gap-3">
+            <div className="flex items-center justify-center w-10 h-10 bg-earth-100 rounded-xl text-neutral-800 shrink-0">
+              <ShieldCheck size={22} />
             </div>
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-forest-800">Ranger Verification</h1>
-              <p className="text-forest-500 mt-1">Review and verify the AI-assisted animal count</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-neutral-950">Review & Save</h1>
+              <p className="text-earth-500 mt-1">Correct any counts before saving to your history</p>
             </div>
-          </div>
-
-          <div className="bg-forest-50 border border-forest-200 rounded-lg p-4 mt-6">
-            <p className="text-sm text-forest-700">
-              <strong>Your responsibility as a ranger:</strong> Use your field expertise to review the AI detections and provide the final, verified count for conservation records. Adjust any counts that don't match what you observed.
-            </p>
           </div>
         </div>
 
         {/* Comparison */}
         <div className="grid lg:grid-cols-2 gap-6 mb-6">
-          {/* AI Estimate */}
-          <div className="bg-accent-50 border border-accent-200 rounded-xl p-6">
-            <h2 className="text-sm font-bold uppercase tracking-wide text-accent-700 mb-4 flex items-center gap-2">
-              <Zap size={16} />
-              AI Estimate
-            </h2>
+          <div className="bg-accent-50 border border-accent-200 rounded-2xl p-6">
+            <h2 className="text-xs font-bold uppercase tracking-wide text-accent-600 mb-4">AI Detected</h2>
             <div className="text-4xl font-bold text-accent-600 mb-4">{aiTotal}</div>
-            <p className="text-xs text-accent-600 mb-5">
-              Computer vision detected {aiTotal} animals across all species
-            </p>
             <div className="space-y-2">
               {Object.entries(result.species_counts)
                 .filter(([, count]) => count > 0)
@@ -171,23 +143,16 @@ export default function Results() {
             </div>
           </div>
 
-          {/* Ranger Verification */}
-          <div className="bg-forest-50 border-2 border-forest-300 rounded-xl p-6">
-            <h2 className="text-sm font-bold uppercase tracking-wide text-forest-700 mb-4 flex items-center gap-2">
-              <PawPrint size={16} />
-              Ranger Verified Count
-            </h2>
-            <div className="text-4xl font-bold text-forest-800 mb-4">{verifiedTotal}</div>
-            <p className="text-xs text-forest-600 mb-5">
-              Your verified count for the permanent conservation record
-            </p>
+          <div className="gc-card !border-2 !border-neutral-950 p-6">
+            <h2 className="text-xs font-bold uppercase tracking-wide text-earth-500 mb-4">Your Verified Count</h2>
+            <div className="text-4xl font-bold text-neutral-950 mb-4">{verifiedTotal}</div>
 
             <div className="space-y-3">
               {Object.entries(result.species_counts)
                 .filter(([, count]) => count > 0)
                 .map(([species, aiCount]) => (
-                  <div key={species} className="bg-white p-4 rounded-lg border border-forest-200">
-                    <label className="text-sm font-semibold text-forest-700 capitalize flex items-center gap-2 mb-2">
+                  <div key={species} className="bg-earth-50 p-4 rounded-xl border border-earth-200">
+                    <label className="text-sm font-semibold text-neutral-800 capitalize flex items-center gap-2 mb-2">
                       {SPECIES_EMOJI[species]} {species}
                     </label>
                     <div className="flex items-center gap-3">
@@ -197,11 +162,9 @@ export default function Results() {
                         aria-label={`Verified count for ${species}`}
                         value={verified[species] ?? aiCount}
                         onChange={(e) => updateCount(species, e.target.value)}
-                        className="flex-1 border border-forest-300 rounded-lg px-4 py-2.5 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-forest-400"
+                        className="gc-input !py-2.5 text-lg font-semibold"
                       />
-                      <div className="text-xs text-forest-500 text-right min-w-max">
-                        AI: {aiCount}
-                      </div>
+                      <div className="text-xs text-earth-500 text-right min-w-max">AI: {aiCount}</div>
                     </div>
                   </div>
                 ))}
@@ -209,62 +172,49 @@ export default function Results() {
           </div>
         </div>
 
-        {/* Summary Bar */}
-        <div className="bg-gradient-to-r from-forest-700 to-forest-900 text-white rounded-xl p-8 mb-6">
+        {/* Summary bar */}
+        <div className="bg-neutral-950 text-white rounded-2xl p-8 mb-6">
           <div className="grid grid-cols-3 gap-6 text-center">
             <div>
-              <div className="text-xs uppercase tracking-wider text-forest-200 mb-1">AI Estimate</div>
+              <div className="text-xs uppercase tracking-wider text-earth-400 mb-1">AI Detected</div>
               <div className="text-3xl font-bold">{aiTotal}</div>
             </div>
             <div>
-              <div className="text-xs uppercase tracking-wider text-forest-200 mb-1">Ranger Verified</div>
-              <div className="text-3xl font-bold text-white">{verifiedTotal}</div>
+              <div className="text-xs uppercase tracking-wider text-earth-400 mb-1">Verified</div>
+              <div className="text-3xl font-bold">{verifiedTotal}</div>
             </div>
             <div>
-              <div className="text-xs uppercase tracking-wider text-forest-200 mb-1">Difference</div>
-              <div className={`text-3xl font-bold ${Math.abs(difference) === 0 ? "text-forest-300" : "text-accent-300"}`}>
-                {Math.abs(difference)}
-              </div>
+              <div className="text-xs uppercase tracking-wider text-earth-400 mb-1">Difference</div>
+              <div className="text-3xl font-bold">{Math.abs(difference)}</div>
             </div>
           </div>
         </div>
 
-        {/* Error Display */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-red-700 text-sm">
+          <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 text-red-700 text-sm">
             <strong>Error:</strong> {error}
           </div>
         )}
 
-        {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3">
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className="flex-1 bg-forest-600 hover:bg-forest-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md hover:shadow-lg"
-          >
+          <button onClick={handleSave} disabled={saving} className="gc-button-primary flex-1 !py-4 disabled:opacity-50 disabled:cursor-not-allowed">
             {saving ? (
               <>
                 <Loader2 className="animate-spin" size={20} />
-                Saving Survey...
+                Saving...
               </>
             ) : (
               <>
                 <CheckCircle2 size={20} />
-                Save Verified Census
+                Save Result
               </>
             )}
           </button>
-          <button
-            onClick={() => navigate("/new-survey")}
-            className="flex-1 bg-white border border-earth-300 hover:border-forest-400 text-forest-700 font-bold py-4 rounded-lg transition-colors"
-          >
-            New Survey
+          <button onClick={() => navigate("/new-survey")} className="gc-button-secondary flex-1 !py-4">
+            Analyze Another Image
           </button>
         </div>
       </div>
     </div>
   );
 }
-
-import { AlertCircle, Zap } from "lucide-react";

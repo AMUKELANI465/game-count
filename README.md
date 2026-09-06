@@ -1,15 +1,17 @@
-# GAME COUNT
+# GameCount
 
-AI-assisted wildlife population counting.
+AI-powered wildlife counting.
 
-**Pilot environment:** Welgevonden Game Reserve, Limpopo, South Africa.
+GameCount is a general-purpose wildlife image counting platform - it is not
+built for or tied to any single reserve, farm, or organisation.
 
 ---
 
 ## 1. Overview
 
-Game Count is a decision-support and counting-assistance tool for game
-rangers and conservation teams. It is **not** a replacement for rangers,
+GameCount is a decision-support and counting-assistance tool for game
+reserves, wildlife researchers, conservation organisations, universities,
+and private game farms. It is **not** a replacement for human judgement,
 and it does not claim to solve poaching, conservation management, or
 wildlife protection as a whole.
 
@@ -20,12 +22,12 @@ significant time and effort.
 
 ## 3. Solution
 
-Game Count uses computer vision to analyse aerial photographs and produce
+GameCount uses computer vision to analyse aerial photographs and produce
 a first-pass estimate of the animals visible in the image, by species. The
 ranger reviews the AI's result, corrects it where needed, and the verified
 count is what gets saved as the official census record.
 
-## 4. How Game Count works
+## 4. How GameCount works
 
 ```
 Aerial Image
@@ -58,8 +60,29 @@ Census Record
 
 ## 6. Architecture
 
-See [`docs/architecture.md`](docs/architecture.md) for the full
-breakdown. In short:
+```
+Mobile / Desktop User
+        |
+GameCount Frontend (React)
+        |
+Image Upload API (FastAPI)
+        |
+Image Validation
+        |
+YOLO AI Service (DemoDetector or YOLODetector)
+        |
+Detection Results
+        |
+Database (SQLite / Postgres)
+        |
+Analytics API
+        |
+GameCount Analytics
+```
+
+Mapping is a secondary feature - see section 20. See
+[`docs/architecture.md`](docs/architecture.md) for the full breakdown. In
+short:
 
 ```
 React (Vite/TS/Tailwind) -> FastAPI -> AnimalDetector (Demo or YOLO) -> SQLite/Postgres
@@ -166,7 +189,17 @@ MODEL_PATH=ai/models/your-model.pt
 **Note:** a generic/pretrained YOLO model cannot reliably identify
 elephant, giraffe, impala, or springbok from aerial imagery. A
 wildlife-specific dataset and fine-tuned model are required for reliable
-species-level detection - see `ai/README.md`.
+species-level detection - see `ai/README.md`. Because no such dataset or
+trained model exists in this repository yet, `render.yaml` and
+`docker-compose.yml` both default to `DEMO_MODE=true` - do not flip either
+to `false` with the stock `yolov8n.pt` checkpoint, since that checkpoint
+has no `impala`/`springbok` classes at all and would silently report zero
+for both.
+
+**CORS:** by default `CORS_ORIGINS=*` (any origin), which is fine for
+local development. Before deploying publicly, set `CORS_ORIGINS` to a
+comma-separated list of the exact frontend origin(s) that should be
+allowed to call the API.
 
 ## 14. Database setup
 

@@ -23,7 +23,12 @@ services:
       - db
     environment:
       DATABASE_URL: postgresql://gamecount:gamecount@db:5432/gamecount
+      # See render.yaml / ai/README.md: stays "true" until a wildlife-trained
+      # model exists. yolov8n.pt has no impala/springbok classes.
       DEMO_MODE: "true"
+      MODEL_PATH: ""
+      YOLO_CONFIDENCE: "0.25"
+      YOLO_IMAGE_SIZE: "960"
       MAX_IMAGE_SIZE_MB: "20"
     ports:
       - "8000:8000"
